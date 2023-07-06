@@ -66,7 +66,7 @@ center_y = img.shape[0] / 2
 max_distance = np.sqrt((img.shape[0]/2)**2 + (img.shape[1]/2)**2)
 #create line for radar sweeping
 
-line, = ax.plot([center_x, center_x], [center_y, center_y-50], color='white', linewidth=2, solid_capstyle='round')
+line, = ax.plot([center_x, center_x], [center_y, center_y-50], color='white', linewidth=2, solid_capstyle='round')#posible problema
 #define parameters for pulsation
 
 freq = 10
@@ -92,6 +92,7 @@ ani = animation.FuncAnimation(fig, update_line, frames=np.linspace(-50,300, num_
 # create video writer
 Writer = animation.writers['ffmpeg']
 writer = Writer(fps=30, metadata=dict(artist='Me'), bitrate=1800)
+
 
 # save animation as video
 ani.save('swept.mp4', writer=writer)

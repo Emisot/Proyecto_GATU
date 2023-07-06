@@ -72,8 +72,8 @@ midi_file.save('lux.mid')
 
 
 # Play MIDI file using timidity
-#os.system("timidity lux.mid")
-os.system("rm lux_ghostly.mp3")
+os.system("timidity lux.mid")
+#os.system("rm lux_ghostly.mp3")
 # ~ os.system("timidity -Ow -A120 -EFreverb=0.8 -s 10 lux.mid -o - | ffmpeg -i - -filter:a "atempo=2.0" -acodec libmp3lame -ab 64k lux10.mp3")
 # ~ command = 'timidity -Ow -A120 -EFreverb=0.8 -s 10 lux.mid -o - | sox - -p reverb 80 echo 0.8 0.5 5 0.4 | ffmpeg -i - -acodec libmp3lame -ab 64k lux_ghostly.mp3'
 # ~ command = 'timidity -Ow -A120 -EFreverb=0.8 -s 10 lux.mid -o - | ffmpeg -i - -filter:a "atempo=2.0" -acodec libmp3lame -ab 64k lux10.mp3'
