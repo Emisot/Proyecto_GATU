@@ -3,9 +3,11 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import os
 import cv2
+#sox timidity ffmpeg smplayer geeqie
 
 # Load the input image
-img = cv2.imread('/home/emiliano/proyecto_INAOE/GATU/corona3.jpeg', 0)
+img = cv2.imread('/home/emiliano/proyecto_INAOE/GATU/corona3.jpeg',0)
+
 
 # Get the dimensions of the image
 h, w = img.shape
@@ -25,7 +27,8 @@ for angle in np.arange(0, 360, 1.0):
         if x < 0 or x >= w or y < 0 or y >= h:
             radar_values[r, int(angle)] = 0
         else:
-            radar_values[r, int(angle)] = img[y, x]
+            radar_values[r, int(angle)] = img[y,x]
+
 
 # Calculate average values at each angle
 avg_values = np.mean(radar_values, axis=0)
@@ -33,11 +36,13 @@ avg_values = np.mean(radar_values, axis=0)
 # Plot the radar values
 fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
 ax.plot(np.deg2rad(np.arange(0, 360, 1.0)), avg_values)
+plt.savefig("radian.png")
 
 ax.set_ylim(0, h // 2)
 
 # Save radar sweep to text file
 data = np.column_stack((np.arange(0, 360, 1.0), avg_values))
+data = data[::-1]
 # Save the data as a CSV file
 np.savetxt('lux.csv', data, delimiter=',', header='C1,C2', comments='', fmt='%.3f')
 
@@ -66,7 +71,7 @@ center_y = img.shape[0] / 2
 max_distance = np.sqrt((img.shape[0]/2)**2 + (img.shape[1]/2)**2)
 #create line for radar sweeping
 
-line, = ax.plot([center_x, center_x], [center_y, center_y-50], color='white', linewidth=2, solid_capstyle='round')#posible problema
+line, = ax.plot([center_x, center_x], [center_y, center_y-1], color='white', linewidth=2, solid_capstyle='round')#posible problema
 #define parameters for pulsation
 
 freq = 10
@@ -75,9 +80,9 @@ amp = 5
 
 def update_line(num):
 	angle = np.deg2rad(num)
-	r = max_distance + amp*np.sin(2.0*np.pi*freq*num/num_frames)
+	r = max_distance - amp*np.sin(2.0*np.pi*freq*num/num_frames)
 	x = center_x + r*np.cos(angle)
-	y = center_y - r*np.sin(angle)
+	y = center_y + r*np.sin(angle)
 	line.set_data([center_x, x], [center_y, y])
 	alpha = 1#(1-r/100)**3 # calculate alpha value based on distance from center
 	line.set_linewidth(2)# (2 + 4*(1-r/1000)) # set line thickness based on distance from center
@@ -87,7 +92,7 @@ def update_line(num):
 
 # create animation object
 num_frames = 1440 # 72 seconds at 50ms per frame
-ani = animation.FuncAnimation(fig, update_line, frames=np.linspace(-50,300, num_frames, endpoint=False), interval=50)
+ani = animation.FuncAnimation(fig, update_line, frames=np.linspace(0,360, num_frames, endpoint=False), interval=1)
 
 # create video writer
 Writer = animation.writers['ffmpeg']

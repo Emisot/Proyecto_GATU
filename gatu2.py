@@ -2,11 +2,14 @@ import os
 import mido
 import numpy as np
 import matplotlib.pyplot as plt
+#sox timidity ffmpeg smplayer geeqie
 
 # Load data from file
 data = np.loadtxt('/home/emiliano/proyecto_INAOE/GATU/lux.csv', delimiter=',', skiprows=1)
 
 # Extract time and lux values
+data = data[::-1]
+
 time = data[:, 0]
 lux = data[:, 1]
 
@@ -37,7 +40,7 @@ track.append(mido.MetaMessage('time_signature', numerator=numerator, denominator
                               clocks_per_click=clocks_per_click, notated_32nd_notes_per_beat=notated_32nd_notes_per_beat))
 
 # Set instrument
-instrument = 120  # acoustic grand piano
+instrument = 127  # acoustic grand piano
 program_change = mido.Message('program_change', program=instrument, time=0)
 track.append(program_change)
 
@@ -72,7 +75,7 @@ midi_file.save('lux.mid')
 
 
 # Play MIDI file using timidity
-os.system("timidity lux.mid")
+#os.system("timidity lux.mid")
 #os.system("rm lux_ghostly.mp3")
 # ~ os.system("timidity -Ow -A120 -EFreverb=0.8 -s 10 lux.mid -o - | ffmpeg -i - -filter:a "atempo=2.0" -acodec libmp3lame -ab 64k lux10.mp3")
 # ~ command = 'timidity -Ow -A120 -EFreverb=0.8 -s 10 lux.mid -o - | sox - -p reverb 80 echo 0.8 0.5 5 0.4 | ffmpeg -i - -acodec libmp3lame -ab 64k lux_ghostly.mp3'
